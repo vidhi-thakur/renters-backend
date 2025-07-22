@@ -60,21 +60,16 @@ router.get('/', (req, res) => {
 });
 
 router.patch('/', (req, res) => {
-    const { id, key, value } = req.body;
+    const { id, verified } = req.body;
 
     // Basic validation
-    if (!id || !key || value === undefined) {
-        return res.status(400).json({ message: 'id, key, and value are required' });
+    if (!id || !verified === undefined) {
+        return res.status(400).json({ message: 'id, and verified are required' });
     }
 
-    const allowedKeys = ['verified', 'building_name', 'unit_number', 'tenant_name', 'amount', 'payment_method', 'transaction_id'];
-    if (!allowedKeys.includes(key)) {
-        return res.status(400).json({ message: 'Invalid field/key provided' });
-    }
+    const sql = `UPDATE payments SET verified = ? WHERE id = ?`;
 
-    const sql = `UPDATE payments SET ${key} = ? WHERE id = ?`;
-
-    db.query(sql, [value, id], (err, result) => {
+    db.query(sql, [verified, id], (err, result) => {
         if (err) {
             console.error('❌ DB Update Error:', err.message);
             return res.status(500).json({ message: 'Database update error', error: err.message });
@@ -84,7 +79,7 @@ router.patch('/', (req, res) => {
             return res.status(404).json({ message: 'Payment not found' });
         }
 
-        res.status(200).json({ message: `${key} updated successfully` });
+        res.status(200).json({ message: `Verification successfully` });
     });
 });
 
