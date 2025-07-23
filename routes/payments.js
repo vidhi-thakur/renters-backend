@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const { v4: uuidv4 } = require('uuid');
-const { validatePaymentInput, validateVerifyInput } = require('../middlewares/validatePayment');
+const { validatePaymentInput, validateVerifyInput } = require('../middleware/validatePayment');
 const { verifyToken } = require('../middleware/authMiddleware');
 
 router.post('/', validatePaymentInput, (req, res, next) => {
