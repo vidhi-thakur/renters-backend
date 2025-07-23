@@ -15,7 +15,7 @@ const validatePaymentInput = (req, res, next) => {
 const validateVerifyInput = (req, res, next) => {
     const { id, verified } = req.body;
     if (!id || typeof verified !== 'boolean') {
-        return res.status(400).json({ message: 'Valid id and verified(boolean) are required' });
+        return res.status(400).json({ message: 'Valid id and verified are required' });
     }
     next();
 };

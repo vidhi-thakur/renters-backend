@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const paymentRoutes = require('./routes/payments');
+const authRoutes = require('./routes/auth');
 const db = require('./db');
 require('dotenv').config();
 
@@ -28,6 +29,7 @@ db.getConnection((err, connection) => {
 
 // Routes
 app.use('/api/payments', paymentRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error Handler
 app.use((err, req, res, next) => {

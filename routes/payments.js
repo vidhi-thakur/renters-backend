@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const { validatePaymentInput, validateVerifyInput } = require('../middlewares/validatePayment');
+const { verifyToken } = require('../middleware/authMiddleware');
 
 router.post('/', validatePaymentInput, (req, res, next) => {
     const { building_name, unit_number, tenant_name, amount, payment_method } = req.body;
@@ -33,7 +34,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.patch('/', validateVerifyInput, (req, res, next) => {
+router.patch('/', verifyToken, validateVerifyInput, (req, res, next) => {
     const { id, verified } = req.body;
 
     db.query(`UPDATE payments SET verified = ? WHERE id = ?`, [verified, id], (err, result) => {
