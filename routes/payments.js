@@ -27,15 +27,16 @@ router.post('/', validatePaymentInput, (req, res, next) => {
     });
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', verifyToken, (req, res, next) => {
     db.query('SELECT * FROM payments', (err, results) => {
         if (err) return next(err);
         res.status(200).json(results);
     });
 });
 
-router.patch('/', verifyToken, validateVerifyInput, (req, res, next) => {
-    const { id, verified } = req.body;
+router.patch('/:id', verifyToken, validateVerifyInput, (req, res, next) => {
+    const { verified } = req.body;
+    const { id } = req.params;
 
     db.query(`UPDATE payments SET verified = ? WHERE id = ?`, [verified, id], (err, result) => {
         if (err) return next(err);
