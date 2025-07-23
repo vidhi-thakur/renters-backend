@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
     // Hardcoded user 
     if (username === 'admin' && password === 'admin123') {
         const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '2h' });
-        return res.json({ user_token: token, user_role: 'admin' });
+        return res.status(200).json({ user_token: token, user_role: 'admin' });
     }
 
     res.status(401).json({ message: 'Invalid credentials' });
